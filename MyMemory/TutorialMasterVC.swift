@@ -14,8 +14,16 @@ class TutorialMasterVC: UIViewController, UIPageViewControllerDataSource {
     var contentTitles = ["STEP 1", "STEP 2", "STEP 3", "STEP 4"]
     var contenImages = ["Page0", "Page1", "Page2", "Page3"]
     
-    override func viewDidLoad() {
+    @IBAction func close(_ sender: Any) {
+        let ud = UserDefaults.standard
+        ud.set(true, forKey: UserInfoKey.tutorial)
+        ud.synchronize()
         
+        self.presentingViewController?.dismiss(animated: true)
+    }
+    
+    
+    override func viewDidLoad() {
         // 1. 페이지 뷰 컨트롤러 객체 생성하기
         self.pageVC = self.instanceTutorialVC(name: "PageVC") as? UIPageViewController
         self.pageVC.dataSource = self
@@ -37,7 +45,7 @@ class TutorialMasterVC: UIViewController, UIPageViewControllerDataSource {
         }
         
         // "ContentsVC"라는 StoryBoard ID를 가진 뷰 컨트롤러의 인스턴스를 생성하고 캐스팅
-        guard let cvc = self.instanceTutorialVC(name: "ContentsVC") as? TutorialContensVC else {
+        guard let cvc = self.instanceTutorialVC(name: "ContentsVC") as? TutorialContentsVC else {
             return nil
         }
         
@@ -52,7 +60,7 @@ class TutorialMasterVC: UIViewController, UIPageViewControllerDataSource {
     // 즉, 현재의 상태에서 앞쪽으로 스와이프했을 때 보여줄 콘텔츠 뷰 컨트롤러 객체
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         // 현재의 페이지 인덱스
-        guard var index = (viewController as! TutorialContensVC).pageIndex else {
+        guard var index = (viewController as! TutorialContentsVC).pageIndex else {
             return nil
         }
         
@@ -70,7 +78,7 @@ class TutorialMasterVC: UIViewController, UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         
         // 현재의 페이지 인덱스
-        guard var index = (viewController as! TutorialContensVC).pageIndex else {
+        guard var index = (viewController as! TutorialContentsVC).pageIndex else {
             return nil
         }
         

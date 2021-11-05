@@ -13,7 +13,14 @@ class MemoListVC: UITableViewController {
     
     // 화면이 나타날 때마다 호출되는 메소드
     override func viewWillAppear(_ animated: Bool) {
-        // 테이블 데이터를 다시 ㅇ릭어들인다. 이에 따라 행을 구성하는 로직이 다시 실행될 것이다.
+        let ud = UserDefaults.standard
+        if ud.bool(forKey: UserInfoKey.tutorial) == false {
+            let vc = self.instanceTutorialVC(name: "MasterVC")
+            vc?.modalPresentationStyle = .fullScreen
+            self.present(vc!, animated: false)
+            return
+        }
+        // 테이블 데이터를 다시 읽어들인다. 이에 따라 행을 구성하는 로직이 다시 실행될 것이다.
         self.tableView.reloadData()
     }
     // 테이블 행의 개수를 결정하는 메소드
